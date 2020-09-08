@@ -223,3 +223,21 @@ CIntN& CIntN::operator=(CIntN&& r) noexcept
 	r.number = nullptr;
 	return *this;
 }
+
+bool CIntN::operator==(const CIntN& right) const
+{
+	for (int i = 0; i < size; i++) {
+		if (number[i] != right.number[i]) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool CIntN::operator!=(const CIntN& right) const
+{
+	if (*this == right) {
+		return false;
+	}
+	return true;
+}

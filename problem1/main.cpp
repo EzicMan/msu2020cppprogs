@@ -1,8 +1,12 @@
 #include "CIntN.hpp"
+#include "AutoTest.hpp"
 using namespace std;
 
 int main() {
-	CIntN a = 10;
-	cout << a + 1;
+	if (AutoTest()) {
+		cout << "AutoTest not complete!";
+		return 0;
+	}
+	cout << "AutoTest complete!";
 	return 0;
 }
