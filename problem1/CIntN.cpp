@@ -90,7 +90,7 @@ CIntN::CIntN(long long a) {
 }
 
 CIntN::CIntN(int a)
-	: CIntN(long long(a))
+	: CIntN((long long)a)
 {
 }
 
@@ -122,10 +122,10 @@ CIntN::CIntN(const char* a) {
 		int tenth = 1;
 		number[k] = 0;
 		for (int i = 0; i < 9; i++) {
-			if (stringSize - i - k * 9 - 1 < 0) {
+			if (stringSize - i - (int)k * 9 - 1 < 0) {
 				break;
 			}
-			number[k] += (a[stringSize - i - k * 9 - 1] - '0') * tenth;
+			number[k] += (a[stringSize - i - (int)k * 9 - 1] - '0') * tenth;
 			tenth *= 10;
 		}
 	}
@@ -226,7 +226,7 @@ CIntN& CIntN::operator=(CIntN&& r) noexcept
 
 bool CIntN::operator==(const CIntN& right) const
 {
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < (int)size; i++) {
 		if (number[i] != right.number[i]) {
 			return false;
 		}
