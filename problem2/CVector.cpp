@@ -110,11 +110,16 @@ CVector::CVector(CVector&& r) noexcept
 	r.coords = nullptr;
 }
 
-CVector::CVector(size_t size, double* coords)
+CVector::CVector(size_t size, const double* coords)
 {
 	this->size = size;
 	this->coords = new double[size];
 	memcpy(this->coords, coords, size * sizeof(double));
+}
+
+CVector::CVector(std::initializer_list<double> l)
+	:CVector(l.size(), l.begin())
+{
 }
 
 CVector::~CVector() {

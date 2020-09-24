@@ -8,6 +8,8 @@ int main() {
 		return 0;
 	}
 	cout << "AutoTest complete!" << endl;
+	CVector b = { 1.1,2.2,3.3 };
+	cout << b[0] << " " << b[1] << " " << b[2] << endl;
 	double a1[3] = {1,2,3};
 	CVector a(3, a1);
 	cout << a.getSize() << ":" << a[0] << " " << a[1] << " " << a[2] << endl;

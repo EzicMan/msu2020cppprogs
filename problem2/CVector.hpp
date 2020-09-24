@@ -16,7 +16,8 @@ public:
 	CVector(int);
 	CVector(const CVector&);
 	CVector(CVector&&) noexcept;
-	CVector(size_t, double*);
+	CVector(size_t, const double*);
+	CVector(std::initializer_list<double>);
 	~CVector();
 	double* getCoords() const {
 		return coords;
