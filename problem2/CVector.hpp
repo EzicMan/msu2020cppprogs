@@ -12,6 +12,7 @@ class CVector {
 public:
 	CVector();
 	CVector(long long);
+	CVector(double);
 	CVector(int);
 	CVector(const CVector&);
 	CVector(CVector&&) noexcept;

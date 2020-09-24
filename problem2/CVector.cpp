@@ -79,14 +79,20 @@ CVector::CVector() {
 	coords[2] = 0;
 }
 
-CVector::CVector(long long a) {
+CVector::CVector(long long a) 
+	: CVector(static_cast<double>(a))
+{
+}
+
+CVector::CVector(double a)
+{
 	size = 1;
 	coords = new double[size];
-	coords[0] = static_cast<double>(a);
+	coords[0] = a;
 }
 
 CVector::CVector(int a)
-	: CVector(static_cast<long long>(a))
+	: CVector(static_cast<double>(a))
 {
 }
 
