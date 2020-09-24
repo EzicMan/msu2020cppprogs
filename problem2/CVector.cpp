@@ -187,6 +187,7 @@ CVector& CVector::operator+=(const CVector& right) {
 		newCoords[i] += right.coords[i];
 	}
 	size = newSize;
+	delete[] coords;
 	coords = newCoords;
 	newCoords = nullptr;
 	return *this;
@@ -220,6 +221,7 @@ CVector& CVector::operator-=(const CVector& right)
 		newCoords[i] -= right.coords[i];
 	}
 	size = newSize;
+	delete[] coords;
 	coords = newCoords;
 	newCoords = nullptr;
 	return *this;
@@ -231,6 +233,7 @@ CVector& CVector::operator=(const CVector& r)
 		return *this;
 	}
 	size = r.size;
+	delete[] coords;
 	coords = new double[size];
 	memcpy(coords, r.coords, size * sizeof(double));
 	return *this;
@@ -242,6 +245,7 @@ CVector& CVector::operator=(CVector&& r) noexcept
 		return *this;
 	}
 	size = r.size;
+	delete[] coords;
 	coords = r.coords;
 	r.size = 0;
 	r.coords = nullptr;
