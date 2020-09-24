@@ -232,6 +232,23 @@ CVector& CVector::operator-=(const CVector& right)
 	return *this;
 }
 
+double& CVector::operator[](int i)
+{
+	if (i < 0) {
+		throw std::invalid_argument("Index cannot be negative");
+	}
+	if (i >= size) {
+		double* newCoords = new double[i + 1];
+		memset(newCoords, 0, (i + 1) * sizeof(double));
+		memcpy(newCoords, coords, size * sizeof(double));
+		delete[] coords;
+		coords = newCoords;
+		newCoords = nullptr;
+		size = i + 1;
+	}
+	return coords[i];
+}
+
 CVector& CVector::operator=(const CVector& r)
 {
 	if (&r == this) {

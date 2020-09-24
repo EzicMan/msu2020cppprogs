@@ -36,18 +36,7 @@ public:
 	CVector& operator-=(const CVector&);
 	friend CVector operator-(const CVector&, const CVector&);
 	friend double operator*(const CVector&, const CVector&);
-	double& operator[](int i) {
-		if (i >= size) {
-			double* newCoords = new double[i+1];
-			memset(newCoords, 0, (i+1) * sizeof(double));
-			memcpy(newCoords, coords, size * sizeof(double));
-			delete[] coords;
-			coords = newCoords;
-			newCoords = nullptr;
-			size = i + 1;
-		}
-		return coords[i];
-	}
+	double& operator[](int i);
 	CVector& operator=(const CVector&);
 	CVector& operator=(CVector&&) noexcept;
 	bool operator==(const CVector&) const;
