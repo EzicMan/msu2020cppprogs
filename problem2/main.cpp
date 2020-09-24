@@ -4,9 +4,16 @@ using namespace std;
 
 int main() {
 	if (!AutoTest()) {
-		cout << "AutoTest not complete!";
+		cout << "AutoTest not complete!" << endl;
 		return 0;
 	}
-	cout << "AutoTest complete!";
+	cout << "AutoTest complete!" << endl;
+	double a1[3] = {1,2,3};
+	CVector a(3, a1);
+	cout << a.getSize() << ":" << a[0] << " " << a[1] << " " << a[2] << endl;
+	a[0] = 10;
+	cout << a.getSize() << ":" << a[0] << " " << a[1] << " " << a[2] << endl;
+	a[5] = 100;
+	cout << a.getSize() << ":" <<  a[0] << " " << a[1] << " " << a[2] << " " << a[3] << " " << a[4] << " " << a[5] << endl;
 	return 0;
 }
