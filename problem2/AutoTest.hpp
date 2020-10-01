@@ -8,17 +8,17 @@ bool AutoTest() {
 	CVector a(3, a1);
 	CVector b(3, b1);
 	CVector c = a + b;
-	if (c.getSize() != 3 || (fabs(c.getCoords()[0] - 3) > DBL_MIN && fabs(c.getCoords()[1] - 3) > DBL_MIN && fabs(c.getCoords()[2] - 3) > DBL_MIN)) {
+	if (c.getSize() != 3 || (fabs(c.getCoords()[0] - 3) > DBL_MIN || fabs(c.getCoords()[1] - 3) > DBL_MIN || fabs(c.getCoords()[2] - 3) > DBL_MIN)) {
 		return false;
 	}
 	CVector d(4, c1);
 	c -= d;
-	if (c.getSize() != 4 || (fabs(c.getCoords()[0] + 2) > DBL_MIN && fabs(c.getCoords()[1] + 3) > DBL_MIN && fabs(c.getCoords()[2] + 4) > DBL_MIN && fabs(c.getCoords()[3] + 5) > DBL_MIN)) {
+	if (c.getSize() != 4 || (fabs(c.getCoords()[0] + 2) > DBL_MIN || fabs(c.getCoords()[1] + 3) > DBL_MIN || fabs(c.getCoords()[2] + 4) > DBL_MIN || fabs(c.getCoords()[3] + 5) > DBL_MIN)) {
 		return false;
 	}
 	c = CVector(3, a1);
 	c *= 3;
-	if (c.getSize() != 3 || (fabs(c.getCoords()[0] - 3) > DBL_MIN && fabs(c.getCoords()[1] - 3) > DBL_MIN && fabs(c.getCoords()[2] - 3) > DBL_MIN)) {
+	if (c.getSize() != 3 || (fabs(c.getCoords()[0] - 3) > DBL_MIN || fabs(c.getCoords()[1] - 3) > DBL_MIN || fabs(c.getCoords()[2] - 3) > DBL_MIN)) {
 		return false;
 	}
 	if (fabs(c * a - 9) > DBL_MIN) {

@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <cfloat>
 #include <cmath>
+#include <algorithm>
 
 class CVector {
 	double* coords;
