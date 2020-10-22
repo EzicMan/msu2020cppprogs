@@ -11,6 +11,13 @@ bool AutoTest() {
 		return false;
 	}
 	delete[] a;
+	a = new char[7];
+	a1.decode(a, 7, a1.encode("aaaaaa", 7));
+	if (strcmp(a, "aaaaaa") != 0) {
+		delete[] a;
+		return false;
+	}
+	delete[] a;
 	a = new char[25];
 	a1.decode(a, 25, a1.encode("TOBEORNOTTOBEORTOBEORNOT", 25));
 	if (strcmp(a, "TOBEORNOTTOBEORTOBEORNOT") != 0) {
