@@ -13,5 +13,5 @@ public:
 	lzwCompressor(std::string a);
 
 	std::string encode(const void* data, size_t size);
-	void decode(void* buf, size_t size, std::string data);
+	std::string decode(std::string data);
 };

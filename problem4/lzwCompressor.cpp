@@ -60,7 +60,7 @@ std::string lzwCompressor::encode(const void* data, size_t size)
 	return ans;
 }
 
-void lzwCompressor::decode(void* buf, size_t size, std::string data)
+std::string lzwCompressor::decode(std::string data)
 {
 	std::vector<long long> nums;
 	nums.push_back(0);
@@ -106,9 +106,6 @@ void lzwCompressor::decode(void* buf, size_t size, std::string data)
 			cur++;
 		}
 	}
-	char* ukaz = (char*)buf;
-	for (int i = 0; i < std::min(origin.size(), size); i++) {
-		ukaz[i] = origin[i];
-	}
 	back_dict.clear();
+	return origin;
 }
