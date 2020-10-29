@@ -1,4 +1,5 @@
 #include "lzwCompressor.hpp"
+#include <limits>
 
 lzwCompressor::lzwCompressor() {
 	for (int i = 0; i < 256; i++) {
@@ -16,11 +17,10 @@ lzwCompressor::lzwCompressor(std::string a) {
 
 std::string lzwCompressor::encode(const void* data, size_t size)
 {
-	std::map<std::string, int> dict = def_dict;
-	std::vector<int> nums;
+	std::map<std::string, long long> dict = def_dict;
+	std::vector<long long> nums;
 	std::string w = "";
-	int cur = this->cur;
-	int bytes = 0;
+	long long cur = this->cur;
 	char* s = (char*)data;
 	for (int i = 0; i < size; i++) {
 		if (w == "") {
@@ -30,7 +30,9 @@ std::string lzwCompressor::encode(const void* data, size_t size)
 		if (dict.find(w + s[i]) == dict.end()) {
 			nums.push_back(dict[w]);
 			dict[w + s[i]] = cur;
-			cur++;
+			if (cur < std::numeric_limits<long long>::max()) {
+				cur++;
+			}
 			w = s[i];
 		}
 		else {
@@ -40,18 +42,18 @@ std::string lzwCompressor::encode(const void* data, size_t size)
 	if (w != "") {
 		nums.push_back(dict[w]);
 	}
-	bytes = (cur - 1) / 256 + 1;
 	std::string ans = "";
-	ans += (char)bytes;
 	for (int i = 0; i < nums.size(); i++) {
-		for (int j = 0; j < bytes; j++) {
-			if (nums[i] % 255 == 0 && nums[i] != 0) {
-				ans += 255;
-				nums[i] -= 255;
-				continue;
+		if (nums[i] == 0) {
+			ans += (char)0;
+		}
+		while(nums[i] != 0){
+			uint8_t t = (nums[i] & 0b01111111) << 1;
+			nums[i] >>= 7;
+			if (nums[i] != 0) {
+				t += 1;
 			}
-			ans += nums[i] % 255;
-			nums[i] -= nums[i] % 255;
+			ans += t;
 		}
 	}
 	dict = def_dict;
@@ -60,27 +62,31 @@ std::string lzwCompressor::encode(const void* data, size_t size)
 
 void lzwCompressor::decode(void* buf, size_t size, std::string data)
 {
-	std::vector<int> nums;
-	int bytes = data[0];
-	for (int i = 1; i < data.size(); i += bytes) {
-		int temp = 0;
-		for (int j = 0; j < bytes; j++) {
-			if (data[i + j] < 0) {
-				temp += 256 + data[i + j];
-			}
-			else {
-				temp += data[i + j];
-			}
+	std::vector<long long> nums;
+	nums.push_back(0);
+	int ni = 0;
+	int x = 0;
+	for (int i = 0; i < data.size(); i++) {
+		uint8_t t = data[i];
+		if (t % 2 == 0) {
+			t >>= 1;
+			nums[ni] += t << x;
+			ni++;
+			x = 0;
+			nums.push_back(0);
+			continue;
 		}
-		nums.push_back(temp);
+		t >>= 1;
+		nums[ni] += t << x;
+		x += 7;
 	}
 	std::string origin = "";
-	std::map<int, std::string> back_dict;
+	std::map<long long, std::string> back_dict;
 	for (auto a : def_dict) {
 		back_dict[a.second] = a.first;
 	}
 	std::string last = "";
-	int cur = this->cur;
+	long long cur = this->cur;
 	for (int i = 0; i < nums.size(); i++) {
 		if (last == "") {
 			last = back_dict[nums[i]];

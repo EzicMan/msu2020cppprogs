@@ -5,8 +5,8 @@
 #include <vector>
 
 class lzwCompressor {
-	std::map<std::string, int> def_dict;
-	int cur;
+	std::map<std::string, long long> def_dict;
+	long long cur;
 public:
 	lzwCompressor();
 	// custom alphabet constructor
