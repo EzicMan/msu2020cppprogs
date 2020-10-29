@@ -1,5 +1,6 @@
 #include "lzwCompressor.hpp"
 #include <limits>
+#include <iostream>
 
 lzwCompressor::lzwCompressor() {
 	for (int i = 0; i < 256; i++) {
@@ -17,47 +18,47 @@ lzwCompressor::lzwCompressor(std::string a) {
 
 std::string lzwCompressor::encode(const void* data, size_t size)
 {
-	std::map<std::string, long long> dict = def_dict;
-	std::vector<long long> nums;
-	std::string w = "";
-	long long cur = this->cur;
-	char* s = (char*)data;
-	for (int i = 0; i < size; i++) {
-		if (w == "") {
-			w += s[i];
-			continue;
-		}
-		if (dict.find(w + s[i]) == dict.end()) {
-			nums.push_back(dict[w]);
-			dict[w + s[i]] = cur;
-			if (cur < std::numeric_limits<long long>::max()) {
-				cur++;
-			}
-			w = s[i];
-		}
-		else {
-			w += s[i];
-		}
+std::map<std::string, long long> dict = def_dict;
+std::vector<long long> nums;
+std::string w = "";
+long long cur = this->cur;
+char* s = (char*)data;
+for (int i = 0; i < size; i++) {
+	if (w == "") {
+		w += s[i];
+		continue;
 	}
-	if (w != "") {
+	if (dict.find(w + s[i]) == dict.end()) {
 		nums.push_back(dict[w]);
-	}
-	std::string ans = "";
-	for (int i = 0; i < nums.size(); i++) {
-		if (nums[i] == 0) {
-			ans += (char)0;
+		dict[w + s[i]] = cur;
+		if (cur < std::numeric_limits<long long>::max()) {
+			cur++;
 		}
-		while(nums[i] != 0){
-			uint8_t t = (nums[i] & 0b01111111) << 1;
-			nums[i] >>= 7;
-			if (nums[i] != 0) {
-				t += 1;
-			}
-			ans += t;
-		}
+		w = s[i];
 	}
-	dict = def_dict;
-	return ans;
+	else {
+		w += s[i];
+	}
+}
+if (w != "") {
+	nums.push_back(dict[w]);
+}
+std::string ans = "";
+for (int i = 0; i < nums.size(); i++) {
+	if (nums[i] == 0) {
+		ans += (char)0;
+	}
+	while (nums[i] != 0) {
+		uint8_t t = (nums[i] & 0b01111111) << 1;
+		nums[i] >>= 7;
+		if (nums[i] != 0) {
+			t += 1;
+		}
+		ans += t;
+	}
+}
+dict = def_dict;
+return ans;
 }
 
 std::string lzwCompressor::decode(std::string data)
@@ -108,4 +109,77 @@ std::string lzwCompressor::decode(std::string data)
 	}
 	back_dict.clear();
 	return origin;
+}
+
+void lzwCompressor::compress(std::ifstream& in, std::ofstream& out)
+{
+	std::map<std::string, long long> dict;
+	std::vector<long long> nums;
+	nums.resize(1000000);
+	std::string w = "";
+	long long cur = 0;
+	long long mcur = 0;
+	long long perc = 0;
+	in.seekg(0, in.end);
+	size_t size = in.tellg();
+	in.seekg(0, in.beg);
+	std::vector<uint8_t> data;
+	data.resize(size);
+	in.read((char*)data.data(), size);
+	for(long long i = 0; i < size; i++) {
+		if (mcur > 1000000) {
+			std::cout << ((double)perc / 738.0) * 100.0 << std::endl;
+			perc++;
+			if (w != "") {
+				nums[mcur] = dict[w];
+			}
+			for (int i = 0; i < nums.size(); i++) {
+				if (nums[i] == 0) {
+					out << (char)0;
+				}
+				while (nums[i] != 0) {
+					uint8_t t = (nums[i] & 0b01111111) << 1;
+					nums[i] >>= 7;
+					if (nums[i] != 0) {
+						t += 1;
+					}
+					out << t;
+				}
+			}
+			mcur = 0;
+		}
+		if (w == "") {
+			w += data[i];
+			continue;
+		}
+		if (dict.find(w + (char)data[i]) == dict.end()) {
+			nums[mcur] = dict[w];
+			dict[w + (char)data[i]] = cur;
+			mcur++;
+			if (cur < std::numeric_limits<long long>::max()) {
+				cur++;
+			}
+			w = data[i];
+		}
+		else {
+			w += data[i];
+		}
+	}
+	if (w != "") {
+		nums[mcur] = dict[w];
+		mcur++;
+	}
+	for (int i = 0; i < nums.size(); i++) {
+		if (nums[i] == 0) {
+			out << (char)0;
+		}
+		while (nums[i] != 0) {
+			uint8_t t = (nums[i] & 0b01111111) << 1;
+			nums[i] >>= 7;
+			if (nums[i] != 0) {
+				t += 1;
+			}
+			out << t;
+		}
+	}
 }

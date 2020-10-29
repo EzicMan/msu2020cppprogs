@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <string>
+#include <fstream>
 #include <algorithm>
 #include <vector>
 
@@ -14,4 +15,5 @@ public:
 
 	std::string encode(const void* data, size_t size);
 	std::string decode(std::string data);
+	void compress(std::ifstream& in, std::ofstream& out);
 };
