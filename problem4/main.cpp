@@ -6,6 +6,7 @@
 using namespace std;
 
 //D:\Games\GTASA\gta_sa\setup-1.bin
+//D:\1step.mp4
 
 std::string slurp(std::ifstream& in) {
 	std::ostringstream sstr;
@@ -26,6 +27,11 @@ int main() {
 	ifstream in(a, std::ios::in | std::ios::binary);
 	ofstream out(a + ".scompr", std::ios::out | std::ios::binary);
 	c.compress(in, out);
+	in.close();
+	out.close();
+	in.open(a + ".scompr", std::ios::in | std::ios::binary);
+	out.open(a + ".decompr", std::ios::out | std::ios::binary);
+	c.decompress(in, out);
 	in.close();
 	out.close();
 	return 0;

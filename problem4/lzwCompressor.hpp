@@ -1,12 +1,12 @@
 #pragma once
-#include <map>
 #include <string>
 #include <fstream>
 #include <algorithm>
 #include <vector>
+#include "Trie.hpp"
 
 class lzwCompressor {
-	std::map<std::string, long long> def_dict;
+	Trie dict;
 	long long cur;
 public:
 	lzwCompressor();
@@ -16,4 +16,5 @@ public:
 	std::string encode(const void* data, size_t size);
 	std::string decode(std::string data);
 	void compress(std::ifstream& in, std::ofstream& out);
+	void decompress(std::ifstream& in, std::ofstream& out);
 };
