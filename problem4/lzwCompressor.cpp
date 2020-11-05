@@ -7,67 +7,98 @@ lzwCompressor::lzwCompressor() {
 	for (int i = 0; i < 256; i++) {
 		dict.insert(std::string(1,(uint8_t)i),i);
 	}
-	cur = 256;
+	cur = 257;
 }
 
 lzwCompressor::lzwCompressor(std::string a) {
 	for (int i = 0; i < a.size(); i++) {
 		dict.insert(std::string(1, (uint8_t)a[i]), i);
 	}
-	cur = a.size();
+	cur = a.size() + 1;
 }
 
 std::string lzwCompressor::encode(const void* data, size_t size)
 {
-std::vector<long long> nums;
-std::string w = "";
-long long cur = this->cur;
-uint8_t* s = (uint8_t*)data;
-long long impNum = 0;
-long long limpNum = 0;
-for (int i = 0; i < size; i++) {
-	if (w == "") {
-		w += s[i];
-		limpNum = (uint8_t)s[i];
-		continue;
-	}
-	if (!dict.checkWord(w + (char)s[i], impNum)) {
-		nums.push_back(limpNum);
-		if (cur < std::numeric_limits<long long>::max()) {
-			dict.insert(w + (char)s[i],cur);
-			cur++;
+	std::vector<uint32_t> nums;
+	std::string w = "";
+	long long cur = this->cur;
+	uint8_t* s = (uint8_t*)data;
+	long long impNum = 0;
+	long long limpNum = 0;
+
+	int nextTarget = 0;
+
+	for (int i = 0; i < size; i++) {
+		if (i >= nextTarget * (size / 100))
+		{
+			printf("Status: %.2f%%\n", (double)i / size * 100.0);
+			printf("Trie memory usage: %.3f MiB\n", dict.nodes.size() * 256 * 4 / 1024.0 / 1024.0);
+			nextTarget++;
 		}
-		w = s[i];
-		dict.checkWord(w, limpNum);
-	}
-	else {
-		w += s[i];
-		limpNum = impNum;
-	}
-}
-if (dict.checkWord(w, impNum)) {
-	nums.push_back(impNum);
-}
-std::string ans = "";
-for (int i = 0; i < nums.size(); i++) {
-	if (nums[i] == 0) {
-		ans += (char)0;
-	}
-	while (nums[i] != 0) {
-		uint8_t t = (nums[i] & 0b01111111) << 1;
-		nums[i] >>= 7;
-		if (nums[i] != 0) {
-			t += 1;
+
+		if (dict.nodes.size() * 256 * 4 / 1024.0 / 1024.0 > 6000) {
+			nums.push_back(limpNum);
+			w.clear();
+			nums.push_back(256);
+			dict.clear();
+			for (int i = 0; i < 256; i++) {
+				dict.insert(std::string(1, (uint8_t)i), i);
+			}
+			cur = 257;
 		}
-		ans += t;
+
+		if (w == "") {
+			w += s[i];
+			limpNum = (uint8_t)s[i];
+			continue;
+		}
+
+		std::string tmp = w + (char)s[i];
+		
+		if (!dict.checkWord(tmp, impNum)) {
+			nums.push_back(limpNum);
+			if (cur < std::numeric_limits<uint32_t>::max()) {
+				dict.insert(tmp, cur);
+				cur++;
+			}
+			//std::cout << w << "\n";
+			w = s[i];
+			dict.checkWord(w, limpNum);
+		}
+		else if (tmp.size() >= KOEF_TUEVA)
+		{
+			//std::cout << w << "\n";
+			nums.push_back(impNum);
+			w.clear();
+		}
+		else {
+			w += s[i];
+			limpNum = impNum;
+		}
 	}
-}
-dict.clear();
-for (int i = 0; i < 256; i++) {
-	dict.insert(std::string(1,(uint8_t)i), i);
-}
-cur = 256;
-return ans;
+	if (dict.checkWord(w, impNum)) {
+		nums.push_back(impNum);
+	}
+	std::string ans = "";
+	for (int i = 0; i < nums.size(); i++) {
+		if (nums[i] == 0) {
+			ans += (char)0;
+		}
+		while (nums[i] != 0) {
+			uint8_t t = (nums[i] & 0b01111111) << 1;
+			nums[i] >>= 7;
+			if (nums[i] != 0) {
+				t += 1;
+			}
+			ans += t;
+		}
+	}
+	dict.clear();
+	for (int i = 0; i < 256; i++) {
+		dict.insert(std::string(1,(uint8_t)i), i);
+	}
+	cur = 256;
+	return ans;
 }
 
 std::string lzwCompressor::decode(std::string data)
@@ -98,6 +129,14 @@ std::string lzwCompressor::decode(std::string data)
 	std::string last = "";
 	long long cur = this->cur;
 	for (int i = 0; i < nums.size(); i++) {
+		if (nums[i] == 256) {
+			back_dict.clear();
+			for (int i = 0; i < 256; i++) {
+				back_dict[i] = (uint8_t)i;
+			}
+			last.clear();
+			cur = 257;
+		}
 		if (last == "") {
 			last = back_dict[nums[i]];
 			origin += back_dict[nums[i]];

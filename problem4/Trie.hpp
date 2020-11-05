@@ -3,10 +3,11 @@
 #include <string>
 
 class Trie {
+public:
 	typedef long long ll;
-	std::vector<std::vector<ll>> nodes;
+	std::vector<std::vector<uint32_t>> nodes;
 	std::vector<bool> nodef;
-	std::vector<ll> nums;
+	std::vector<uint32_t> nums;
 	ll alphabetSize;
 public:
 	Trie() {
@@ -22,13 +23,15 @@ public:
 	void insert(std::string word, long long num) {
 		ll j = 0;
 		for (ll i = 0; i < word.size(); i++) {
-			if (nodes[j][int((uint8_t)word[i])] == 0) {
-				nodes.push_back(std::vector<ll>(alphabetSize, 0));
-				nodes[j][int((uint8_t)word[i])] = nodes.size() - 1;
+			uint8_t c = (uint8_t)word[i];
+
+			if (nodes[j][c] == 0) {
+				nodes.push_back(std::vector<uint32_t>(alphabetSize, 0));
+				nodes[j][c] = nodes.size() - 1;
 				j = nodes.size() - 1;
 			}
 			else {
-				j = nodes[j][int((uint8_t)word[i])];
+				j = nodes[j][c];
 			}
 		}
 		nodef.resize(nodes.size());

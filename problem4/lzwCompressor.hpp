@@ -5,6 +5,8 @@
 #include <vector>
 #include "Trie.hpp"
 
+#define KOEF_TUEVA 100
+
 class lzwCompressor {
 	Trie dict;
 	long long cur;
