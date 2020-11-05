@@ -42,10 +42,13 @@ int main() {
 	c.compress(in, out);
 	in.close();
 	out.close();
-	//in.open(a + ".scompr", std::ios::in | std::ios::binary);
-	//out.open(a + ".decompr", std::ios::out | std::ios::binary);
-	//c.decompress(in, out);
-	//in.close();
-	//out.close();
+	cout << "--------------------------" << endl;
+	cout << "Started decoding...." << endl;
+	cout << "--------------------------" << endl;
+	in.open(a + ".scompr", std::ios::in | std::ios::binary);
+	out.open(a + ".decompr", std::ios::out | std::ios::binary);
+	c.decompress(in, out);
+	in.close();
+	out.close();
 	return 0;
 }

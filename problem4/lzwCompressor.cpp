@@ -65,12 +65,12 @@ std::string lzwCompressor::encode(const void* data, size_t size)
 			w = s[i];
 			dict.checkWord(w, limpNum);
 		}
-		else if (tmp.size() >= KOEF_TUEVA)
-		{
-			//std::cout << w << "\n";
-			nums.push_back(impNum);
-			w.clear();
-		}
+		//else if (tmp.size() >= KOEF_TUEVA)
+		//{
+		//	//std::cout << w << "\n";
+		//	nums.push_back(impNum);
+		//	w.clear();
+		//}
 		else {
 			w += s[i];
 			limpNum = impNum;
@@ -128,7 +128,13 @@ std::string lzwCompressor::decode(std::string data)
 	}
 	std::string last = "";
 	long long cur = this->cur;
+	int nextTarget = 0;
 	for (int i = 0; i < nums.size(); i++) {
+		if (i >= nextTarget * (nums.size() / 100))
+		{
+			printf("Status: %.2f%%\n", (double)i / nums.size() * 100.0);
+			nextTarget++;
+		}
 		if (nums[i] == 256) {
 			back_dict.clear();
 			for (int i = 0; i < 256; i++) {
