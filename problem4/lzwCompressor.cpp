@@ -7,7 +7,7 @@ lzwCompressor::lzwCompressor() {
 	for (int i = 0; i < 256; i++) {
 		dict.insert(std::string(1,(uint8_t)i),i);
 	}
-	cur = 257;
+	cur = 258;
 }
 
 lzwCompressor::lzwCompressor(std::string a) {
@@ -44,7 +44,7 @@ std::string lzwCompressor::encode(const void* data, size_t size)
 			for (int i = 0; i < 256; i++) {
 				dict.insert(std::string(1, (uint8_t)i), i);
 			}
-			cur = 257;
+			cur = 258;
 		}
 
 		if (w == "") {
@@ -65,12 +65,13 @@ std::string lzwCompressor::encode(const void* data, size_t size)
 			w = s[i];
 			dict.checkWord(w, limpNum);
 		}
-		//else if (tmp.size() >= KOEF_TUEVA)
-		//{
-		//	//std::cout << w << "\n";
-		//	nums.push_back(impNum);
-		//	w.clear();
-		//}
+		else if (tmp.size() >= KOEF_TUEVA)
+		{
+			//std::cout << w << "\n";
+			nums.push_back(impNum);
+			nums.push_back(257);
+			w.clear();
+		}
 		else {
 			w += s[i];
 			limpNum = impNum;
@@ -97,7 +98,7 @@ std::string lzwCompressor::encode(const void* data, size_t size)
 	for (int i = 0; i < 256; i++) {
 		dict.insert(std::string(1,(uint8_t)i), i);
 	}
-	cur = 256;
+	cur = 258;
 	return ans;
 }
 
@@ -127,7 +128,7 @@ std::string lzwCompressor::decode(std::string data)
 		back_dict[i] = (uint8_t)i;
 	}
 	std::string last = "";
-	long long cur = this->cur;
+	long long cur = 258;
 	int nextTarget = 0;
 	for (int i = 0; i < nums.size(); i++) {
 		if (i >= nextTarget * (nums.size() / 100))
@@ -137,11 +138,16 @@ std::string lzwCompressor::decode(std::string data)
 		}
 		if (nums[i] == 256) {
 			back_dict.clear();
-			for (int i = 0; i < 256; i++) {
-				back_dict[i] = (uint8_t)i;
+			for (int j = 0; j < 256; j++) {
+				back_dict[j] = (uint8_t)j;
 			}
 			last.clear();
-			cur = 257;
+			cur = 258;
+			continue;
+		}
+		if (nums[i] == 257) {
+			last.clear();
+			continue;
 		}
 		if (last == "") {
 			last = back_dict[nums[i]];
