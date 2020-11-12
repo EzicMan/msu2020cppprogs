@@ -28,7 +28,7 @@ std::string lzwCompressor::encode(const void* data, size_t size)
 
 	int nextTarget = 0;
 
-	for (int i = 0; i < size; i++) {
+	for (size_t i = 0; i < size; i++) {
 		if (i >= nextTarget * (size / 100))
 		{
 			printf("Status: %.2f%%\n", (double)i / size * 100.0);
@@ -81,7 +81,7 @@ std::string lzwCompressor::encode(const void* data, size_t size)
 		nums.push_back(impNum);
 	}
 	std::string ans = "";
-	for (int i = 0; i < nums.size(); i++) {
+	for (size_t i = 0; i < nums.size(); i++) {
 		if (nums[i] == 0) {
 			ans += (char)0;
 		}
@@ -108,7 +108,7 @@ std::string lzwCompressor::decode(std::string data)
 	nums.push_back(0);
 	int ni = 0;
 	int x = 0;
-	for (int i = 0; i < data.size(); i++) {
+	for (size_t i = 0; i < data.size(); i++) {
 		uint8_t t = data[i];
 		if (t % 2 == 0) {
 			t >>= 1;
@@ -130,7 +130,7 @@ std::string lzwCompressor::decode(std::string data)
 	std::string last = "";
 	long long cur = 258;
 	int nextTarget = 0;
-	for (int i = 0; i < nums.size(); i++) {
+	for (size_t i = 0; i < nums.size(); i++) {
 		if (i >= nextTarget * (nums.size() / 100))
 		{
 			printf("Status: %.2f%%\n", (double)i / nums.size() * 100.0);
