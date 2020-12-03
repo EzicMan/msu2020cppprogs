@@ -25,7 +25,7 @@ def func(pryam):
                 maxt[1] = ans[1]
                 maxt1.clear()
                 for j in ans1:
-                    maxt1.append(i)
+                    maxt1.append(j)
             ans1.clear()
             ans1.append(i)
             ans[0] = lines[i][0]
