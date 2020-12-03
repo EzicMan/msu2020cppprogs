@@ -17,7 +17,7 @@ def func(pryam):
     maxt1 = [0]
     for i in range(1,len(lines)):
         if lines[i][0] - ans[0] <= ans[1]:
-            ans[1] = ans[1] + lines[i][1]
+            ans[1] = ans[1] + ((lines[i][0] + lines[i][1]) - (ans[0] + ans[1]))
             ans1.append(i)
         else:
             if maxt[1] < ans[1]:
