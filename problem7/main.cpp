@@ -29,6 +29,9 @@ int main() {
 	for (int i = 0; i < n; i++) {
 		delete arr[i];
 	}
+	for (int i = 0; i < 2; i++) {
+		delete create[i];
+	}
 	delete[] arr;
 	return 0;
 }

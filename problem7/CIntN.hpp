@@ -19,7 +19,7 @@ public:
 	CIntN(size_t, const char*);
 	CIntN(const CIntN&);
 	CIntN(CIntN&&) noexcept;
-	~CIntN();
+	virtual ~CIntN();
 	friend std::ostream& operator<<(std::ostream&, const CIntN&);
 	CIntN& operator+=(const CIntN&);
 	CIntN& operator+(const CIntN& right);
@@ -42,7 +42,7 @@ public:
 			return 1;
 		}
 		std::ofstream out(FileName,std::ios::app);
-		out << *this << std::endl;
+		out << this->N << std::endl << *this << std::endl;
 		out.close();
 		return 0;
 	}
