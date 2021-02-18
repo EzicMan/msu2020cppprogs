@@ -99,6 +99,7 @@ CIntN::CIntN(size_t N, int a)
 CIntN::CIntN(const CIntN& r) {
 	size = r.size;
 	this->N = r.N;
+	delete[] number;
 	number = new uint32_t[size];
 	memcpy(number, r.number, size * sizeof(uint32_t));
 }
@@ -107,9 +108,11 @@ CIntN::CIntN(CIntN&& r) noexcept
 {
 	size = r.size;
 	this->N = r.N;
+	delete[] number;
 	number = r.number;
 	r.size = 0;
 	r.number = nullptr;
+
 }
 
 CIntN::~CIntN() {
@@ -210,6 +213,7 @@ CIntN& CIntN::operator=(const CIntN& r)
 		return *this;
 	}
 	size = r.size;
+	delete[] number;
 	number = new uint32_t[size];
 	memcpy(number, r.number, size * sizeof(uint32_t));
 	return *this;
@@ -221,6 +225,7 @@ CIntN& CIntN::operator=(CIntN&& r) noexcept
 		return *this;
 	}
 	size = r.size;
+	delete[] number;
 	number = r.number;
 	r.size = 0;
 	r.number = nullptr;
