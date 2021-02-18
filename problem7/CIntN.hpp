@@ -52,7 +52,7 @@ class CIntN1 : public CIntN {
 public:
 	using CIntN::CIntN;
 	int output(const char* FileName = NULL) override {
-		std::cout << this->N << std::endl << *this;
+		std::cout << this->N << std::endl << *this << std::endl;
 		return 0;
 	}
 };
