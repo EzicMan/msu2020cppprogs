@@ -74,7 +74,7 @@
 CIntN::CIntN(size_t N) {
 	size = N / 9 + ((N % 9) > 0);
 	this->N = N;
-	number = new uint32_t[size];
+	number = new int32_t[size];
 	for (size_t i = 0; i < size; i++) {
 		number[i] = 0;
 	}
@@ -83,7 +83,7 @@ CIntN::CIntN(size_t N) {
 CIntN::CIntN(size_t N, long long a) {
 	size = N / 9 + ((N % 9) > 0);
 	this->N = N;
-	number = new uint32_t[size];
+	number = new int32_t[size];
 	for (size_t i = 0; i < size; i++) {
 		number[i] = a % 1000000000;
 		a -= number[i];
@@ -100,8 +100,8 @@ CIntN::CIntN(const CIntN& r) {
 	size = r.size;
 	this->N = r.N;
 	delete[] number;
-	number = new uint32_t[size];
-	memcpy(number, r.number, size * sizeof(uint32_t));
+	number = new int32_t[size];
+	memcpy(number, r.number, size * sizeof(int32_t));
 }
 
 CIntN::CIntN(CIntN&& r) noexcept
@@ -123,9 +123,14 @@ CIntN::~CIntN() {
 CIntN::CIntN(size_t N, const char* a) {
 	size = N / 9 + ((N % 9) > 0);
 	this->N = N;
-	number = new uint32_t[size];
+	number = new int32_t[size];
 	int stringSize = 0;
+	int kon = 0;
+	if (a[0] == '-') {
+		kon = 1;
+	}
 	while (a[stringSize] != '\0') { stringSize++; }
+	stringSize -= kon;
 	for (size_t k = 0; k < size; k++) {
 		int tenth = 1;
 		number[k] = 0;
@@ -133,8 +138,11 @@ CIntN::CIntN(size_t N, const char* a) {
 			if (stringSize - i - (int)k * 9 - 1 < 0) {
 				break;
 			}
-			number[k] += (a[stringSize - i - (int)k * 9 - 1] - '0') * tenth;
+			number[k] += (a[stringSize - i - (int)k * 9 - 1 + kon] - '0') * tenth;
 			tenth *= 10;
+		}
+		if (kon) {
+			number[k] = -number[k];
 		}
 	}
 }
@@ -146,11 +154,23 @@ std::ostream& operator<<(std::ostream& os, const CIntN& r)
 	for (; trim > 0; trim--) {
 		tenth *= 10;
 	}
+	for (int i = 0; i < r.size; i++) {
+		if (r.number[i] < 0) {
+			os << '-';
+			break;
+		}
+	}
 	r.number[r.size - 1] %= tenth;
 	bool skipZeroes = true;
 	for (int i = r.size - 1; i >= 0; i--) {
 		char a[10];
-		int b = r.number[i];
+		int b = 0;
+		if (r.number[i] < 0) {
+			b = -r.number[i];
+		}
+		else {
+			b = r.number[i];
+		}
 		if (b == 0 && skipZeroes && i == 0) {
 			os << "0";
 			break;
@@ -164,7 +184,9 @@ std::ostream& operator<<(std::ostream& os, const CIntN& r)
 			b /= 10;
 		}
 		const char* p = a;
-		while (*p == '0') p++;
+		if (i == r.size - 1) {
+			while (*p == '0') p++;
+		}
 		os << p;
 		skipZeroes = false;
 	}
@@ -179,7 +201,7 @@ CIntN& CIntN::operator+(const CIntN& right)
 
 CIntN& CIntN::operator-( const CIntN& right)
 {
-	*this += right;
+	*this -= right;
 	return *this;
 }
 
@@ -200,7 +222,6 @@ CIntN& CIntN::operator-=(const CIntN& right)
 		number[i] -= ost;
 		if (number[i] < right.number[i]) {
 			ost = 1;
-			number[i] += 1000000000;
 		}
 		number[i] -= right.number[i];
 	}
@@ -214,8 +235,8 @@ CIntN& CIntN::operator=(const CIntN& r)
 	}
 	size = r.size;
 	delete[] number;
-	number = new uint32_t[size];
-	memcpy(number, r.number, size * sizeof(uint32_t));
+	number = new int32_t[size];
+	memcpy(number, r.number, size * sizeof(int32_t));
 	return *this;
 }
 

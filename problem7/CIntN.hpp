@@ -9,7 +9,7 @@
 
 class CIntN {
 public:
-	uint32_t* number;
+	int32_t* number;
 	size_t size;
 	size_t N;
 public:
