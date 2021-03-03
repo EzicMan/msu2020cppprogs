@@ -160,7 +160,7 @@ std::ostream& operator<<(std::ostream& os, const CIntN& r)
 			break;
 		}
 	}
-	r.number[r.size - 1] %= tenth;
+	//r.number[r.size - 1] %= tenth;
 	bool skipZeroes = true;
 	for (int i = r.size - 1; i >= 0; i--) {
 		char a[10];
@@ -184,7 +184,7 @@ std::ostream& operator<<(std::ostream& os, const CIntN& r)
 			b /= 10;
 		}
 		const char* p = a;
-		if (i == r.size - 1) {
+		if (skipZeroes) {
 			while (*p == '0') p++;
 		}
 		os << p;
@@ -218,10 +218,19 @@ CIntN& CIntN::operator+=(const CIntN& right) {
 CIntN& CIntN::operator-=(const CIntN& right)
 {
 	int ost = 0;
+	int last = 0;
+	for (long long i = size - 1; i >= 0; i--) {
+		if (number[i] != 0) {
+			last = i;
+			break;
+		}
+	}
 	for (size_t i = 0; i < size; i++) {
 		number[i] -= ost;
 		if (number[i] < right.number[i]) {
-			ost = 1;
+			if (i < last) {
+				ost = 1;
+			}
 		}
 		number[i] -= right.number[i];
 	}

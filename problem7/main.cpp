@@ -4,13 +4,14 @@
 using namespace std;
 
 int main() {
-	if (AutoTest()) {
+	if (!AutoTest()) {
 		cout << "AutoTest not complete!" << endl;
 		return 0;
 	}
 	cout << "AutoTest complete!" << endl;
 	Creator* create[2] = {new CreatorIntN0(), new CreatorIntN1()};
 	ifstream in("input.txt");
+	std::remove("out.txt");
 	int n = 0;
 	in >> n;
 	CIntN** arr = new CIntN* [n];

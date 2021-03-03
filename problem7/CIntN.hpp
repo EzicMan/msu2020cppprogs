@@ -36,7 +36,7 @@ public:
 class CIntN0 : public CIntN {
 public:
 	using CIntN::CIntN;
-	int output(const char* FileName = NULL) override {
+	int output(const char* FileName = nullptr) override {
 		if (FileName == nullptr) {
 			std::cout << "Error occured while working with file!" << std::endl;
 			return 1;
@@ -51,7 +51,7 @@ public:
 class CIntN1 : public CIntN {
 public:
 	using CIntN::CIntN;
-	int output(const char* FileName = NULL) override {
+	int output(const char* FileName = nullptr) override {
 		std::cout << this->N << std::endl << *this << std::endl;
 		return 0;
 	}

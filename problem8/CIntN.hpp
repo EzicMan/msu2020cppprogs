@@ -39,7 +39,7 @@ public:
 class CIntN0 : public CIntN {
 public:
 	using CIntN::CIntN;
-	int output(std::string FileName = NULL) override {
+	int output(std::string FileName = nullptr) override {
 		if (FileName.empty()) {
 			std::cout << "Error occured while working with file!" << std::endl;
 			return 1;
