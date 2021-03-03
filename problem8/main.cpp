@@ -9,15 +9,15 @@ int main() {
 		return 0;
 	}
 	cout << "AutoTest complete!" << endl;
-	map<int,unique_ptr<Creator>> create;
-	create[0] = make_unique<CreatorIntN0>();
-	create[1] = make_unique<CreatorIntN1>();
+	map<string,unique_ptr<Creator>> create;
+	create["Hori"] = make_unique<CreatorIntN0>();
+	create["Vert"] = make_unique<CreatorIntN1>();
 	ifstream in("input.txt");
 	std::remove("out.txt");
 	int n = 0;
 	in >> n;
 	vector<unique_ptr<CIntN>> arr(n);
-	int j = 0;
+	std::string j;
 	int s = 0;
 	std::string num;
 	for (int i = 0; i < n; i++) {
