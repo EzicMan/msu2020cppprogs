@@ -71,6 +71,12 @@
 
 #include "CIntN.hpp"
 
+CIntN::CIntN() {
+	size = 0;
+	N = 0;
+	number.clear();
+}
+
 CIntN::CIntN(size_t N) {
 	size = N / 9 + ((N % 9) > 0);
 	this->N = N;

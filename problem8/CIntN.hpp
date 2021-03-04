@@ -16,6 +16,7 @@ public:
 	size_t size;
 	size_t N;
 public:
+	CIntN();
 	CIntN(size_t);
 	CIntN(size_t, long long);
 	CIntN(size_t, int);
@@ -39,6 +40,11 @@ public:
 class CIntN0 : public CIntN {
 public:
 	using CIntN::CIntN;
+	using CIntN::operator=;
+
+	CIntN0(const CIntN& r) : CIntN(r){}
+	CIntN0(CIntN&& r) noexcept : CIntN(r) {}
+	
 	int output(std::string FileName = nullptr) override {
 		if (FileName.empty()) {
 			std::cout << "Error occured while working with file!" << std::endl;
@@ -54,6 +60,11 @@ public:
 class CIntN1 : public CIntN {
 public:
 	using CIntN::CIntN;
+	using CIntN::operator=;
+
+	CIntN1(const CIntN& r) : CIntN(r) {}
+	CIntN1(CIntN&& r) noexcept : CIntN(r) {}
+
 	int output(std::string FileName = nullptr) override {
 		std::cout << this->N << std::endl << *this << std::endl;
 		return 0;
