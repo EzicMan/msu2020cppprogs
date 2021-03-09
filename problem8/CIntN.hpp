@@ -26,9 +26,9 @@ public:
 	virtual ~CIntN();
 	friend std::ostream& operator<<(std::ostream&, const CIntN&);
 	CIntN& operator+=(const CIntN&);
-	CIntN& operator+(const CIntN& right);
+	//CIntN& operator+(const CIntN& right);
 	CIntN& operator-=(const CIntN&);
-	CIntN& operator-(const CIntN& right);
+	//CIntN& operator-(const CIntN& right);
 	CIntN& operator=(const CIntN&);
 	CIntN& operator=(CIntN&&) noexcept;
 	bool operator==(const CIntN& right) const;
@@ -42,8 +42,12 @@ public:
 	using CIntN::CIntN;
 	using CIntN::operator=;
 
+	friend CIntN0 operator+(const CIntN0& right, const CIntN& left);
+	friend CIntN0 operator-(const CIntN0& right, const CIntN& left);
+
+	CIntN0() = default;
 	CIntN0(const CIntN& r) : CIntN(r){}
-	CIntN0(CIntN&& r) noexcept : CIntN(r) {}
+	CIntN0(CIntN&& r) noexcept : CIntN(std::move(r)) {}
 	
 	int output(std::string FileName = nullptr) override {
 		if (FileName.empty()) {
@@ -62,8 +66,12 @@ public:
 	using CIntN::CIntN;
 	using CIntN::operator=;
 
+	friend CIntN1 operator+(const CIntN1& right, const CIntN& left);
+	friend CIntN1 operator-(const CIntN1& right, const CIntN& left);
+
+	CIntN1() = default;
 	CIntN1(const CIntN& r) : CIntN(r) {}
-	CIntN1(CIntN&& r) noexcept : CIntN(r) {}
+	CIntN1(CIntN&& r) noexcept : CIntN(std::move(r)) {}
 
 	int output(std::string FileName = nullptr) override {
 		std::cout << this->N << std::endl << *this << std::endl;

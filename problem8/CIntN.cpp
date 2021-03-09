@@ -72,9 +72,9 @@
 #include "CIntN.hpp"
 
 CIntN::CIntN() {
-	size = 0;
-	N = 0;
-	number.clear();
+	size = 1;
+	N = 1;
+	number.push_back(0);
 }
 
 CIntN::CIntN(size_t N) {
@@ -201,16 +201,32 @@ std::ostream& operator<<(std::ostream& os, const CIntN& r)
 	return os;
 }
 
-CIntN& CIntN::operator+(const CIntN& right)
+CIntN0 operator+(const CIntN0& right, const CIntN& left)
 {
-	*this += right;
-	return *this;
+	CIntN0 a = right;
+	a += left;
+	return a;
 }
 
-CIntN& CIntN::operator-( const CIntN& right)
+CIntN0 operator-(const CIntN0& right, const CIntN& left)
 {
-	*this -= right;
-	return *this;
+	CIntN0 a = right;
+	a -= left;
+	return a;
+}
+
+CIntN1 operator+(const CIntN1& right, const CIntN& left)
+{
+	CIntN1 a = right;
+	a += left;
+	return a;
+}
+
+CIntN1 operator-(const CIntN1& right, const CIntN& left)
+{
+	CIntN1 a = right;
+	a -= left;
+	return a;
 }
 
 CIntN& CIntN::operator+=(const CIntN& right) {

@@ -72,9 +72,10 @@
 #include "CIntN.hpp"
 
 CIntN::CIntN() {
-	size = 0;
-	N = 0;
-	number.clear();
+	size = 1;
+	N = 1;
+	number = new int32_t[1];
+	number[0] = 0;
 }
 
 CIntN::CIntN(size_t N) {
@@ -105,7 +106,6 @@ CIntN::CIntN(size_t N, int a)
 CIntN::CIntN(const CIntN& r) {
 	size = r.size;
 	this->N = r.N;
-	delete[] number;
 	number = new int32_t[size];
 	memcpy(number, r.number, size * sizeof(int32_t));
 }
@@ -114,7 +114,6 @@ CIntN::CIntN(CIntN&& r) noexcept
 {
 	size = r.size;
 	this->N = r.N;
-	delete[] number;
 	number = r.number;
 	r.size = 0;
 	r.number = nullptr;
@@ -199,16 +198,32 @@ std::ostream& operator<<(std::ostream& os, const CIntN& r)
 	return os;
 }
 
-CIntN& CIntN::operator+(const CIntN& right)
+CIntN0 operator+(const CIntN0& right, const CIntN& left)
 {
-	*this += right;
-	return *this;
+	CIntN0 a = right;
+	a += left;
+	return a;
 }
 
-CIntN& CIntN::operator-( const CIntN& right)
+CIntN0 operator-(const CIntN0& right, const CIntN& left)
 {
-	*this -= right;
-	return *this;
+	CIntN0 a = right;
+	a -= left;
+	return a;
+}
+
+CIntN1 operator+(const CIntN1& right, const CIntN& left)
+{
+	CIntN1 a = right;
+	a += left;
+	return a;
+}
+
+CIntN1 operator-(const CIntN1& right, const CIntN& left)
+{
+	CIntN1 a = right;
+	a -= left;
+	return a;
 }
 
 CIntN& CIntN::operator+=(const CIntN& right) {
