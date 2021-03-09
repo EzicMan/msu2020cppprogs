@@ -1,6 +1,5 @@
 #include "CIntN.hpp"
 #include "AutoTest.hpp"
-#include <string>
 using namespace std;
 
 int main() {

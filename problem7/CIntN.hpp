@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <cstring>
 #include <fstream>
+#include <string>
 #include <exception>
 
 //constexpr size_t N = 29;
@@ -52,7 +53,30 @@ public:
 			return 1;
 		}
 		std::ofstream out(FileName,std::ios::app);
-		out << this->N << std::endl << *this << std::endl;
+		out << this->N << std::endl << std::endl;
+		if (number[0] < 0) {
+			out << "-" << std::endl;
+		}
+		bool skip = true;
+		std::string a;
+		for (long long i = size - 1; i >= 0; i--) {
+			if (!skip) {
+				int64_t k = abs(number[i]);
+				k += 1000000000;
+				std::string b = std::to_string(abs(number[i]));
+				for (int i = 1; i < b.size(); i++) {
+					a += b[i];
+				}
+			}
+			else if (abs(number[i]) != 0) {
+				skip = false;
+				a = std::to_string(abs(number[i]));
+			}
+		}
+		for (size_t i = 0; i < a.size(); i++) {
+			out << a[i] << std::endl;
+		}
+		out << std::endl;
 		out.close();
 		return 0;
 	}
@@ -71,7 +95,7 @@ public:
 	CIntN1(CIntN&& r) noexcept : CIntN(std::move(r)) {}
 
 	int output(const char* FileName = nullptr) override {
-		std::cout << this->N << std::endl << *this << std::endl;
+		std::cout << this->N << " " << *this << std::endl;
 		return 0;
 	}
 };
