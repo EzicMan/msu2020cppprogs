@@ -1,5 +1,4 @@
 #pragma once
-#include "CIntN.hpp"
 
 bool AutoTest() {
 	CIntN0 a(29);

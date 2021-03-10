@@ -198,34 +198,6 @@ std::ostream& operator<<(std::ostream& os, const CIntN& r)
 	return os;
 }
 
-CIntN0 operator+(const CIntN0& right, const CIntN& left)
-{
-	CIntN0 a = right;
-	a += left;
-	return a;
-}
-
-CIntN0 operator-(const CIntN0& right, const CIntN& left)
-{
-	CIntN0 a = right;
-	a -= left;
-	return a;
-}
-
-CIntN1 operator+(const CIntN1& right, const CIntN& left)
-{
-	CIntN1 a = right;
-	a += left;
-	return a;
-}
-
-CIntN1 operator-(const CIntN1& right, const CIntN& left)
-{
-	CIntN1 a = right;
-	a -= left;
-	return a;
-}
-
 CIntN& CIntN::operator+=(const CIntN& right) {
 	int ost = 0;
 	for (size_t i = 0; i < size; i++) {
