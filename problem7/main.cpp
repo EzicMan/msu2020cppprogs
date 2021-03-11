@@ -8,11 +8,11 @@ int main() {
 		return 0;
 	}
 	cout << "AutoTest complete!" << endl;
-	CIntN0 a;
-	CIntN1 b(1, 1);
+	CIntN0 a(1, -1);
+	CIntN1 b(1, -1);
 	CIntN1 c = a + b;
 	cout << c << endl;
-	Creator* create[2] = {new CreatorIntN0(), new CreatorIntN1()};
+	Creator* create[2] = {new CreatorIntN1(), new CreatorIntN0()};
 	ifstream in("input.txt");
 	int n = 0;
 	in >> n;

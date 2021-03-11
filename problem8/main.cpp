@@ -9,8 +9,8 @@ int main() {
 	}
 	cout << "AutoTest complete!" << endl;
 	map<string,unique_ptr<Creator>> create;
-	create["Hori"] = make_unique<CreatorIntN0>();
-	create["Vert"] = make_unique<CreatorIntN1>();
+	create["Vert"] = make_unique<CreatorIntN0>();
+	create["Hori"] = make_unique<CreatorIntN1>();
 	ifstream in("input.txt");
 	CIntN0 a;
 	CIntN1 b(1, 1);
