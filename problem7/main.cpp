@@ -8,7 +8,7 @@ int main() {
 		return 0;
 	}
 	cout << "AutoTest complete!" << endl;
-	CIntN0 a(1, -1);
+	CIntN1 a(1, -1);
 	CIntN1 b(1, -1);
 	CIntN1 c = a + b;
 	cout << c << endl;

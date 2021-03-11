@@ -6,8 +6,8 @@ public:
 	using CIntN::CIntN;
 	using CIntN::operator=;
 
-	friend CIntN0 operator+(const CIntN0& right, const CIntN& left);
-	friend CIntN0 operator-(const CIntN0& right, const CIntN& left);
+	friend CIntN0 operator+(const CIntN& right, const CIntN& left);
+	friend CIntN0 operator-(const CIntN& right, const CIntN& left);
 
 	CIntN0() = default;
 	CIntN0(const CIntN& r) : CIntN(r) {}

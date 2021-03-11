@@ -12,7 +12,7 @@ int main() {
 	create["Vert"] = make_unique<CreatorIntN0>();
 	create["Hori"] = make_unique<CreatorIntN1>();
 	ifstream in("input.txt");
-	CIntN0 a;
+	CIntN1 a;
 	CIntN1 b(1, 1);
 	CIntN1 c = a + b;
 	cout << c << endl;

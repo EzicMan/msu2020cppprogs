@@ -1,13 +1,13 @@
 #include "CIntN0.h"
 
-CIntN0 operator+(const CIntN0& right, const CIntN& left)
+CIntN0 operator+(const CIntN& right, const CIntN& left)
 {
 	CIntN0 a = right;
 	a += left;
 	return a;
 }
 
-CIntN0 operator-(const CIntN0& right, const CIntN& left)
+CIntN0 operator-(const CIntN& right, const CIntN& left)
 {
 	CIntN0 a = right;
 	a -= left;
