@@ -30,7 +30,7 @@ int CIntN0::output(std::string FileName){
 		if (!skip) {
 			int64_t k = abs(number[i]);
 			k += 1000000000;
-			std::string b = std::to_string(abs(number[i]));
+			std::string b = std::to_string(abs(k));
 			for (int i = 1; i < b.size(); i++) {
 				a += b[i];
 			}
