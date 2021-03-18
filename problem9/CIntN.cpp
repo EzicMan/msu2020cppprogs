@@ -206,13 +206,13 @@ CIntN& CIntN::operator+=(const CIntN& right) {
     std::vector<int> ost(size,0);
     std::vector<bool> test(size, false);
 #pragma omp parallel for
-	for (size_t i = 0; i < size; i++) {
+	for (long long i = 0; i < size; i++) {
 		number[i] += right.number[i];
 		ost[i] = number[i] / 1000000000;
 	}
 	test[0] = true;
 #pragma omp parallel for
-	for(size_t i = 1; i < size; i++){
+	for(long long i = 1; i < size; i++){
 	    if(ost[i-1] != 1) {
             while(!test[i-1]);
 	    }
@@ -237,7 +237,7 @@ CIntN& CIntN::operator-=(const CIntN& right)
 		}
 	}
 #pragma omp parallel for
-	for (size_t i = 0; i < size; i++) {
+	for (long long i = 0; i < size; i++) {
 		//number[i] -= ost;
 		if (number[i] < right.number[i]) {
 			if (i < last) {
@@ -248,7 +248,7 @@ CIntN& CIntN::operator-=(const CIntN& right)
 	}
 	test[0] = true;
 #pragma omp parallel for
-	for(size_t i = 1; i < size; i++){
+	for(long long i = 1; i < size; i++){
 	    if(ost[i-1] != 1){
 	        while(!test[i-1]);
 	    }
