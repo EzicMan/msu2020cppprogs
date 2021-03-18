@@ -155,6 +155,10 @@ CIntN::CIntN(size_t N, std::string a) {
 	}
 }
 
+CIntN::CIntN(size_t N, std::string a, bool omp) : CIntN(N, a) {
+	this->omp = omp;
+}
+
 std::ostream& operator<<(std::ostream& os, const CIntN& r)
 {
 	int trim = r.N - (r.size - 1) * 9;
@@ -205,13 +209,13 @@ CIntN& CIntN::operator+=(const CIntN& right) {
 	//int ost = 0;
     std::vector<int> ost(size,0);
     std::vector<bool> test(size, false);
-#pragma omp parallel for
+#pragma omp parallel for if(omp)
 	for (long long i = 0; i < size; i++) {
 		number[i] += right.number[i];
 		ost[i] = number[i] / 1000000000;
 	}
 	test[0] = true;
-#pragma omp parallel for
+#pragma omp parallel for if(omp)
 	for(long long i = 1; i < size; i++){
 	    if(ost[i-1] != 1) {
             while(!test[i-1]);
@@ -230,13 +234,13 @@ CIntN& CIntN::operator-=(const CIntN& right)
 	std::vector<int> ost(size,0);
 	std::vector<bool> test(size, false);
 	int last = 0;
-#pragma omp parallel for
+#pragma omp parallel for if(omp)
 	for (long long i = size - 1; i >= 0; i--) {
 		if (number[i] != 0) {
 			last = last > i ? last : i;
 		}
 	}
-#pragma omp parallel for
+#pragma omp parallel for if(omp)
 	for (long long i = 0; i < size; i++) {
 		//number[i] -= ost;
 		if (number[i] < right.number[i]) {
@@ -247,7 +251,7 @@ CIntN& CIntN::operator-=(const CIntN& right)
 		number[i] -= right.number[i];
 	}
 	test[0] = true;
-#pragma omp parallel for
+#pragma omp parallel for if(omp)
 	for(long long i = 1; i < size; i++){
 	    if(ost[i-1] != 1){
 	        while(!test[i-1]);

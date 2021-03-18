@@ -8,12 +8,14 @@ public:
 	std::vector<int32_t> number;
 	size_t size;
 	size_t N;
+	bool omp = false;
 public:
 	CIntN();
 	CIntN(size_t);
 	CIntN(size_t, long long);
 	CIntN(size_t, int);
 	CIntN(size_t, std::string);
+	CIntN(size_t, std::string, bool);
 	CIntN(const CIntN&);
 	CIntN(CIntN&&) noexcept;
 	virtual ~CIntN();
