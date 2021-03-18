@@ -32,6 +32,7 @@ bool AutoTest() {
 	long long num_dimensions = 10e7;
 
 	std::string digits_1, digits_2;
+	srand(time(NULL));
 	for (int i = 0; i < num_dimensions; ++i) // Gens rnadom numbers
 	{
 		digits_1.push_back(rand() % 10 + '0');

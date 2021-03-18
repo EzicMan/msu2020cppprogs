@@ -208,14 +208,16 @@ std::ostream& operator<<(std::ostream& os, const CIntN& r)
 CIntN& CIntN::operator+=(const CIntN& right) {
 	//int ost = 0;
     std::vector<int> ost(size,0);
-    std::vector<bool> test(size, false);
-#pragma omp parallel for if(omp)
+    std::vector<char> test(size, 0);
+	omp_set_dynamic(0);
+	omp_set_num_threads(8);
+#pragma omp parallel for schedule(static [, 256]) if(omp)
 	for (long long i = 0; i < size; i++) {
 		number[i] += right.number[i];
 		ost[i] = number[i] / 1000000000;
 	}
-	test[0] = true;
-#pragma omp parallel for if(omp)
+	test[0] = 1;
+#pragma omp parallel for schedule(static [, 256]) if(omp)
 	for(long long i = 1; i < size; i++){
 	    if(ost[i-1] != 1) {
             while(!test[i-1]);
@@ -223,7 +225,7 @@ CIntN& CIntN::operator+=(const CIntN& right) {
 	    number[i] += ost[i-1];
 	    ost[i] = number[i] / 1000000000;
 	    number[i] %= 1000000000;
-	    test[i] = true;
+	    test[i] = 1;
 	}
 	return *this;
 }
@@ -234,13 +236,15 @@ CIntN& CIntN::operator-=(const CIntN& right)
 	std::vector<int> ost(size,0);
 	std::vector<bool> test(size, false);
 	int last = 0;
-#pragma omp parallel for if(omp)
+	omp_set_dynamic(0);
+	omp_set_num_threads(8);
+#pragma omp parallel schedule(static [, 256]) for if(omp)
 	for (long long i = size - 1; i >= 0; i--) {
 		if (number[i] != 0) {
 			last = last > i ? last : i;
 		}
 	}
-#pragma omp parallel for if(omp)
+#pragma omp parallel schedule(static [, 256]) for if(omp)
 	for (long long i = 0; i < size; i++) {
 		//number[i] -= ost;
 		if (number[i] < right.number[i]) {
@@ -251,7 +255,7 @@ CIntN& CIntN::operator-=(const CIntN& right)
 		number[i] -= right.number[i];
 	}
 	test[0] = true;
-#pragma omp parallel for if(omp)
+#pragma omp parallel schedule(static [, 256]) for if(omp)
 	for(long long i = 1; i < size; i++){
 	    if(ost[i-1] != 1){
 	        while(!test[i-1]);
