@@ -70,6 +70,7 @@
 //
 
 #include "CIntN.hpp"
+#include <omp.h>
 
 CIntN::CIntN() {
 	size = 1;
@@ -155,10 +156,6 @@ CIntN::CIntN(size_t N, std::string a) {
 	}
 }
 
-CIntN::CIntN(size_t N, std::string a, bool omp) : CIntN(N, a) {
-	this->omp = omp;
-}
-
 std::ostream& operator<<(std::ostream& os, const CIntN& r)
 {
 	int trim = r.N - (r.size - 1) * 9;
@@ -206,71 +203,37 @@ std::ostream& operator<<(std::ostream& os, const CIntN& r)
 }
 
 CIntN& CIntN::operator+=(const CIntN& right) {
-	//int ost = 0;
-    std::vector<int> ost(size,0);
-    //std::vector<char> test(size, 0);
-	//omp_set_dynamic(0);
-	//omp_set_num_threads(8);
-#pragma omp parallel for if(omp)
+#pragma omp parallel for
 	for (long long i = 0; i < size; i++) {
 		number[i] += right.number[i];
-		ost[i] = number[i] / 1000000000;
 	}
-	//test[0] = 1;
-//#pragma omp parallel for if(omp)
-//	for(long long i = 1; i < size; i++){
-//	    if(ost[i-1] != 1) {
-//            while(!test[i-1]);
-//	    }
-//	    number[i] += ost[i-1];
-//	    ost[i] = number[i] / 1000000000;
-//	    number[i] %= 1000000000;
-//	    test[i] = 1;
-//	}
-	for (long long i = 1; i < size; i++) {
-		number[i] += ost[i - 1];
-		ost[i] = number[i] / 1000000000;
-		number[i] %= 1000000000;
-	}
-	return *this;
 
+	for (size_t i = 1; i < size; i++) {
+		number[i] += number[i-1] / 1000000000;
+		number[i-1] %= 1000000000;
+	}
+	number[size - 1] %= 1000000000;
+	return *this;
 }
 
 CIntN& CIntN::operator-=(const CIntN& right)
 {
-	//int ost = 0;
-	std::vector<int> ost(size,0);
-	std::vector<bool> test(size, false);
+	int ost = 0;
 	int last = 0;
-	omp_set_dynamic(0);
-	omp_set_num_threads(8);
-#pragma omp parallel for if(omp)
 	for (long long i = size - 1; i >= 0; i--) {
 		if (number[i] != 0) {
-			last = last > i ? last : i;
+			last = i;
+			break;
 		}
 	}
-#pragma omp parallel for if(omp)
-	for (long long i = 0; i < size; i++) {
-		//number[i] -= ost;
+	for (size_t i = 0; i < size; i++) {
+		number[i] -= ost;
 		if (number[i] < right.number[i]) {
 			if (i < last) {
-				ost[i] = 1;
+				ost = 1;
 			}
 		}
 		number[i] -= right.number[i];
-	}
-	test[0] = true;
-#pragma omp parallel for if(omp)
-	for(long long i = 1; i < size; i++){
-	    if(ost[i-1] != 1){
-	        while(!test[i-1]);
-	    }
-	    number[i] -= ost[i-1];
-	    if(number[i] < 0 && i < last){
-	        ost[i] = 1;
-	    }
-	    test[i] = true;
 	}
 	return *this;
 }

@@ -1,0 +1,4 @@
+3
+Hori out1.txt 3 100
+Vert out2.txt 2 20
+Vert out3.txt 4 -1000
