@@ -3,9 +3,21 @@ from numpy import array
 from PIL import Image
 from sys import argv
 
-image = Image.open(argv[3])
+if len(argv) < 5:
+    print("Error! Not enough parameters")
+    exit(-1)
+
+try:
+    image = Image.open(argv[3])
+except:
+    print("No such image!")
+    exit(-1)
 image_arr = array(image)
-factor = float(argv[1])
+try:
+    factor = float(argv[1])
+except:
+    print("Data error!")
+    exit(-1)
 for i in range(image_arr.shape[0]):
     for j in range(image_arr.shape[1]):
         a = image_arr[i][j][0] * factor
@@ -28,7 +40,13 @@ for i in range(image_arr.shape[0]):
         image_arr[i][j][2] = c
 
 
-factor = float(argv[2])
+try:
+    factor = float(argv[2])
+except:
+    new_im = Image.fromarray(image_arr)
+    new_im.save(argv[4])
+    print("Data error!")
+    exit(-1)
 avg = 0
 for i in range(image_arr.shape[0]):
     for j in range(image_arr.shape[1]):
