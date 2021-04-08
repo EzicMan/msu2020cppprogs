@@ -220,20 +220,23 @@ CIntN& CIntN::operator-=(const CIntN& right)
 {
 	int ost = 0;
 	int last = 0;
+#pragma omp parallel for shared(last)
 	for (long long i = size - 1; i >= 0; i--) {
 		if (number[i] != 0) {
 			last = i;
 			break;
 		}
 	}
-	for (size_t i = 0; i < size; i++) {
-		number[i] -= ost;
-		if (number[i] < right.number[i]) {
+#pragma omp parallel for
+	for (long long i = 0; i < size; i++) {
+		number[i] -= right.number[i];
+	}
+	for (size_t i = 1; i < size; i++) {
+		if (number[i-1] < 0) {
 			if (i < last) {
-				ost = 1;
+				number[i] -= 1;
 			}
 		}
-		number[i] -= right.number[i];
 	}
 	return *this;
 }

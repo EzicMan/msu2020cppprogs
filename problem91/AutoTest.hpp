@@ -56,15 +56,15 @@ bool AutoTest() {
 
 	std::cout << "Read succesfull" << std::endl;*/
 
-	auto start = std::chrono::system_clock::now();
-
 	CIntN0 num_1(num_dimensions, 0);
 	CIntN0 num_2(num_dimensions, 0);
+
+	auto start = std::chrono::system_clock::now();
 
 	CIntN0 tmpplus = num_1 + num_2;
 
 	end = std::chrono::system_clock::now();
 	elapsed_ms = static_cast<int>(std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
-	std::cout << "One big addition without omp operator runtime is " << elapsed_ms << " ms\n";
+	std::cout << "One big addition operator runtime is " << elapsed_ms << " ms\n";
 	return true;
 }
